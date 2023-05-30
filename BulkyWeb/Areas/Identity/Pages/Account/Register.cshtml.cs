@@ -124,8 +124,8 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
             public string? Role { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
-            [System.ComponentModel.DataAnnotations.Required]
-            public string? Name { get; set; }
+            [Required]
+            public string Name { get; set; }
             [System.ComponentModel.DataAnnotations.Required]
             public string? StreetAddress { get; set; }
             public string? City { get; set; }
@@ -212,6 +212,7 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
                 user.State = Input.State;
                 user.PostalCode = Input.PostalCode;
                 user.PhoneNumber = Input.PhoneNumber;
+                user.StreetAddress = Input.StreetAddress;
 
                 if(Input.Role == SD.Role_Company)
                 {
@@ -291,7 +292,13 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        if (User.IsInRole(SD.Role_Admin)) {
+                            TempData["success"] = "New User Created Successfully";
+                        }
+                        else
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                        }
                         return LocalRedirect(returnUrl);
                     }
                 }

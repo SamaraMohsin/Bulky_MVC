@@ -13,7 +13,7 @@ namespace BulkyBook.DataAccess.Repository
     public class Repository<T> : IRepository<T> where T : class
     {
         private readonly ApplicationDbContext _db;
-
+         
         internal DbSet<T> dbSet;
         public Repository(ApplicationDbContext db)
         {
@@ -71,11 +71,6 @@ namespace BulkyBook.DataAccess.Repository
         public void RemoveRange(IEnumerable<T> entity)
         {
             dbSet.RemoveRange(entity);
-        }
-
-        public void RemoveRange(T entity)
-        {
-            throw new NotImplementedException();
         }
     }
 }
