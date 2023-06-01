@@ -24,6 +24,9 @@ namespace BulkyBook.Models
         public int? CompanyId { get; set; }
         [ForeignKey("CompanyId")] //Next, we need the navigation property.We will have to add the foreign key. And there we have to say that company ID is the navigation property for this company that we have.
         [ValidateNever]
-        public Company Company { get; set; }
+        public Company? Company { get; set; }
+
+        [NotMapped] //it is not pushed to database
+        public string Role { get; set; }
     }
 }
