@@ -71,7 +71,7 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
 
         [HttpPost]
         [ActionName("Summary")]
-		public IActionResult SummaryPOST(ShoppingCartVM shoppingCartVM)
+		public IActionResult SummaryPOST()
 		{
 			var claimsIdentity = (ClaimsIdentity)User.Identity;
 			var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -145,9 +145,10 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
                     options.LineItems.Add(sessionLineItem);
                 }
 				var service = new SessionService();
-				_unitOfWork.OrderHeader.UpdateStripePaymentID(ShoppingCartVM.OrderHeader.Id, service.Create(options).Id,service.Create(options).PaymentIntentId );
+                var session = service.Create(options);
+				_unitOfWork.OrderHeader.UpdateStripePaymentID(ShoppingCartVM.OrderHeader.Id, session.Id, session.PaymentIntentId );
                 _unitOfWork.Save();
-                Response.Headers.Add("Location", service.Create(options).Url);
+                Response.Headers.Add("Location", session.Url);
                 return new StatusCodeResult(303);
 				//service.Create(options);
 
